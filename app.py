@@ -9,7 +9,7 @@ app = Flask(__name__)
 def search():
     if request.method == 'POST':
         query = request.form['query']
-        print(query)
+        print(request.form)
         return render_template('base.html')
     else:
     	return render_template('base.html')

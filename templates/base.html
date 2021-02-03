@@ -15,15 +15,35 @@
   <body>
 
 
-    <form action="#" method="post" class="container">
+    <form action="#" method="post" class="container mt-3">
       <div class="row justify-content-md-center">
-        <div class="col-8 my-3">
+        <div class="col-1 mb-3">
+          <h3>Arxiver</h3>
+        </div>
+        <div class="col-10 mb-3">
           <input type="search" name="query" class="form-control" placeholder="Search" required autofocus>
         </div>
-        <div class="col-2 my-3">
+        <div class="col-1 mb-3">
           <button class="btn btn-primary btn-block" type="submit" value="submit">Search</button>
         </div>
       </div>
+      <div class="row justify-content-md-center">
+        <div class="col-1 my-3">
+        </div>
+        <div class="col-2 mb-3">
+          <label for="from">From (rounded down)</label>
+          <input name="from" id="from" class="form-control" placeholder="YYYY[-MM[-DD]]"  autofocus>
+        </div>
+        <div class="col-2 mb-3">
+          <label for="to">To (rounded up)</label>
+          <input name="to" id="to" class="form-control" placeholder="YYYY[-MM[-DD]]"  autofocus>
+        </div>
+        <div class="col-4 mb-3">
+          <label for="authors">Author(s)</label>
+          <input name="authors" id="authors" class="form-control" placeholder="Name(s)"  autofocus>
+        </div>
+      </div>
+
     </form>
 
 
