@@ -1,12 +1,36 @@
 {% extends 'base.html' %}
 
+{% block style %}
+<style type="text/css">
+  #hover-change:hover {
+    background-color: rgba(0, 123, 255, 0.1);
+    border-radius: 20px;
+  }
+  a {
+    color: #000;
+    text-decoration: none;
+  }
+  a:hover {
+    color: #000; 
+    text-decoration: none; 
+  }
+</style>
+{% endblock %}
+
 {% block content %}
+
 
 <div class="container">
   {% for result in results %}
-  	<p>{{result['title']}}</p>
-  	<p>{{result['authors']}}</p>
-  	<p>{{result['abstract']}}</p>
+  <a href="{{result['link']}}">
+  <div id="hover-change">
+    <div class="px-5 py-2">
+  	<h3>{{result['title']}}</h3>
+  	<p><b>Authors:</b> {{result['authors']}}</p>
+  	<p><b>Abstract:</b> {{result['abstract']}}</p>
+    </div>
+  </div>
+  </a>
   {% endfor %}
 </div>
 
