@@ -1,0 +1,13 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<div class="container">
+  {% for result in results %}
+  	<p>{{result['title']}}</p>
+  	<p>{{result['authors']}}</p>
+  	<p>{{result['abstract']}}</p>
+  {% endfor %}
+</div>
+
+{% endblock %}
