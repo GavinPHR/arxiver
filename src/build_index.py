@@ -1,7 +1,7 @@
 import os
 import json
 import re
-import config
+from config import *
 import preprocessing
 
 def get_index_from_json(filename):
@@ -65,7 +65,8 @@ def build_index(papers_index):
             except:
                 index[word]["doc_positions"][paperID] = []
                 index[word]["doc_positions"][paperID].append(i)
-    index.pop("")
+    for sw in STOP_WORDS:
+        index.pop(sw)
     print(index["test"])
     print(list(index.keys())[10000:10010])
     print(len(list(index.keys())))
