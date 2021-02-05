@@ -1,5 +1,5 @@
 # global vars
-STEMMING = False
+STEMMING = True
 STOPPING = False
 JSON_PATH = "../arxiv_sampled.json"
 STOP_PATH = "../englishST.txt"
@@ -19,4 +19,4 @@ def get_stop_words():
     
     return set([re.sub('\'$', '', re.sub('^\'', '', word)) for word in words if word != ''])
 
-STOP_WORDS = get_stop_words() if STOPPING else set()
+STOP_WORDS = get_stop_words() + "" if STOPPING else set("")
