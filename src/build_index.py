@@ -3,6 +3,9 @@ import json
 import re
 from config import *
 import preprocessing
+import time
+import bz2
+import _pickle as pickle
 
 def get_index_from_json(filename):
     papers_index = dict()
@@ -37,6 +40,7 @@ def build_index(papers_index):
                         docID: pos1, pos2, ...
                         docID: pos1, pos2, ...
     """
+    start_time = time.time()
     unique_terms = set()
     for paperID in list(papers_index.keys()):
         content = papers_index[paperID]["content"]
@@ -67,16 +71,25 @@ def build_index(papers_index):
                 index[word]["doc_positions"][paperID].append(i)
     for sw in STOP_WORDS:
         index.pop(sw)
+    end_time = time.time()
     print(index["test"])
     print(list(index.keys())[10000:10010])
     print(len(list(index.keys())))
 
+    print(end_time - start_time)
+
     return index
+
+def save(index, filename="inverted_index"):
+        """ Save current replay buffer. """
+        with bz2.BZ2File(filename + ".pbz2", "wb") as f:
+            pickle.dump(index, f)
 
 def main():
     papers_index = get_index_from_json("../arxiv_sampled.json")
     print(list(papers_index.keys()))
-    build_index(papers_index)
+    inverted_index = build_index(papers_index)
+    save(inverted_index)
 
 if __name__=="__main__":
     main()
