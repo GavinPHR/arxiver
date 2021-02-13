@@ -32,7 +32,7 @@ def get_index_from_json(filename):
             papers_index[p["id"]] = paper
     return papers_index
 
-def build_index(papers_index):
+def build_index(papers_index, debug=False):
     """
         Build index of the form:
             term: doc_frequency
@@ -71,12 +71,14 @@ def build_index(papers_index):
                 index[word]["doc_positions"][paperID].append(i)
     for sw in STOP_WORDS:
         index.pop(sw)
+    index.pop("")
     end_time = time.time()
-    print(index["test"])
-    print(list(index.keys())[10000:10010])
-    print(len(list(index.keys())))
 
-    print(end_time - start_time)
+    if debug:
+        print(list(index.keys()))
+        print(list(index.keys())[1000:1010])
+        print(len(list(index.keys())))
+        print(end_time - start_time)
 
     return index
 
