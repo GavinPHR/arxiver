@@ -1,11 +1,12 @@
 import os
 import json
 import re
-from config import *
 import preprocessing
 import time
 import bz2
 import _pickle as pickle
+import numpy as np
+from config import *
 
 def get_index_from_json(filename):
     papers_index = dict()
@@ -27,7 +28,7 @@ def get_index_from_json(filename):
                     break
             paper["date"] = d                           # date submitted (e.g. [Day], [d] [Mon] [y] HH:MM:ss [Zone])
             paper["categories"] = p["categories"]       # categories
-            paper["content"] = str(total_content)         # content of paper
+            paper["content"] = str(total_content)       # content of paper
 
             papers_index[p["id"]] = paper
     return papers_index
@@ -35,10 +36,12 @@ def get_index_from_json(filename):
 def build_index(papers_index, debug=False):
     """
         Build index of the form:
-            term: doc_frequency
-                  doc_positions:
-                        docID: pos1, pos2, ...
-                        docID: pos1, pos2, ...
+            { term: { doc_frequency,
+                      doc_positions: 
+                            { docID: [pos1, pos2, ...],
+                              docID: [pos1, pos2, ...]}
+                    }
+            }
     """
     start_time = time.time()
     unique_terms = set()
@@ -75,9 +78,8 @@ def build_index(papers_index, debug=False):
     end_time = time.time()
 
     if debug:
-        print(list(index.keys()))
-        print(list(index.keys())[1000:1010])
         print(len(list(index.keys())))
+        print(index["test"])
         print(end_time - start_time)
 
     return index
@@ -89,8 +91,8 @@ def save(index, filename="inverted_index"):
 
 def main():
     papers_index = get_index_from_json("../arxiv_sampled.json")
-    print(list(papers_index.keys()))
-    inverted_index = build_index(papers_index)
+    # print(list(papers_index.keys()))
+    inverted_index = build_index(papers_index, debug=True)
     save(inverted_index)
 
 if __name__=="__main__":
