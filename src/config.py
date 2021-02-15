@@ -26,4 +26,4 @@ def get_stop_words():
     
     return set([re.sub('\'$', '', re.sub('^\'', '', word)) for word in words])
 
-STOP_WORDS = get_stop_words() if STOPPING else set("")
+STOP_WORDS = get_stop_words()
