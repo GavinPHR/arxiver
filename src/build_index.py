@@ -71,15 +71,22 @@ def build_index(papers_index, debug=False):
             except:
                 index[word]["doc_positions"][paperID] = []
                 index[word]["doc_positions"][paperID].append(i)
-    print(STOP_WORDS)
-    for sw in STOP_WORDS:
+
+    if STOPPING:
+        for sw in STOP_WORDS:
+            try:
+                index.pop(sw)
+            except KeyError:
+                pass
+    else:
         try:
-            index.pop(sw)
+            index.pop("")
         except KeyError:
             pass
     end_time = time.time()
 
     if debug:
+        # print(STOP_WORDS)
         print(len(list(index.keys())))
         print(index["test"])
         try:
