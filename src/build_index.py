@@ -3,9 +3,8 @@ import json
 import re
 import preprocessing
 import time
-import bz2
-import _pickle as pickle
 import numpy as np
+import utils
 from config import *
 
 def get_index_from_json(filename):
@@ -72,28 +71,30 @@ def build_index(papers_index, debug=False):
             except:
                 index[word]["doc_positions"][paperID] = []
                 index[word]["doc_positions"][paperID].append(i)
+    print(STOP_WORDS)
     for sw in STOP_WORDS:
-        index.pop(sw)
-    index.pop("")
+        try:
+            index.pop(sw)
+        except KeyError:
+            pass
     end_time = time.time()
 
     if debug:
         print(len(list(index.keys())))
         print(index["test"])
-        print(end_time - start_time)
+        try:
+            print(index[""])
+        except:
+            pass
+        print("Took {} seconds to build.".format(round(end_time - start_time, 3)))
 
     return index
-
-def save(index, filename="inverted_index"):
-        """ Save current replay buffer. """
-        with bz2.BZ2File(filename + ".pbz2", "wb") as f:
-            pickle.dump(index, f)
 
 def main():
     papers_index = get_index_from_json("../arxiv_sampled.json")
     # print(list(papers_index.keys()))
     inverted_index = build_index(papers_index, debug=True)
-    save(inverted_index)
+    utils.save_index(inverted_index)
 
 if __name__=="__main__":
     main()
