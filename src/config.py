@@ -1,9 +1,8 @@
 import nltk
-from stemming.porter2 import stem
 
 # global vars
 STEMMING = True
-STOPPING = False
+STOPPING = True
 JSON_PATH = "../arxiv_sampled.json"
 STOP_PATH = "../englishST.txt"
 
@@ -12,6 +11,7 @@ if STEMMING:
     sno = nltk.stem.snowball.SnowballStemmer("english")
 
 def get_stop_words():
+    import re
     lines = open(STOP_PATH, "r", encoding="utf-8-sig").readlines()
 
     # create list of words to return
@@ -21,9 +21,9 @@ def get_stop_words():
 
     # stem words and/or remove empty strings, convert "term" to term
     if STEMMING:
-        stops = set([stem(re.sub("\'$", "", re.sub("^\'", "", word))) for word in words if word != ""])
+        stops = set([sno.stem(re.sub('\'$', '', re.sub('^\'', '', word))) for word in words])
         return stops
     
-    return set([re.sub("\'$", "", re.sub("^\'", "", word)) for word in words if word != ""])
+    return set([re.sub('\'$', '', re.sub('^\'', '', word)) for word in words])
 
-STOP_WORDS = get_stop_words() + "" if STOPPING else set("")
+STOP_WORDS = get_stop_words() if STOPPING else set("")
