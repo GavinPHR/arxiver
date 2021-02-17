@@ -43,6 +43,8 @@ def build_index(papers_index, debug=False):
             }
     """
     start_time = time.time()
+
+    # get the unique terms in the paper index
     unique_terms = set()
     for paperID in list(papers_index.keys()):
         content = papers_index[paperID]["content"]
@@ -51,12 +53,14 @@ def build_index(papers_index, debug=False):
     
     index = dict()
     
+    # construct the index and initialize the dictionary at each term
     for term in sorted(unique_terms):
         term_info = {"doc_frequency": 0,
                      "doc_positions": dict()
                     }
         index[term] = term_info
     
+    # loop through the papers and update the index
     for paperID in list(papers_index.keys()):
         content = papers_index[paperID]["content"]
         content = preprocessing.tokenise(content)
@@ -72,6 +76,7 @@ def build_index(papers_index, debug=False):
                 index[word]["doc_positions"][paperID] = []
                 index[word]["doc_positions"][paperID].append(i)
 
+    # pop all the stop words from the index
     if STOPPING:
         for sw in STOP_WORDS:
             try:
@@ -85,6 +90,7 @@ def build_index(papers_index, debug=False):
             pass
     end_time = time.time()
 
+    # if debug flag set, print some information about the data
     if debug:
         # print(STOP_WORDS)
         print(len(list(index.keys())))
@@ -98,7 +104,7 @@ def build_index(papers_index, debug=False):
     return index
 
 def main():
-    papers_index = get_index_from_json("../arxiv_sampled.json")
+    papers_index = get_index_from_json(JSON_PATH)
     # print(list(papers_index.keys()))
     inverted_index = build_index(papers_index, debug=True)
     utils.save_index(inverted_index)
