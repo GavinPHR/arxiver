@@ -17,6 +17,8 @@ The index is a dictionary with a key for each term. At each key is a dictionary 
 - doc_frequency (the number of documents the term appears in)
 - doc_positions (a dictionary with paper IDs for keys, and a list with the positions the term appears in docID)
 
+For example, `index["test"]["doc_frequency"]` will return the number of documents the word "test" appears in. And `index["test"]["doc_positions"]` will return a dictionary i.e. {"1011.9011": [pos0, pos1, ....], ...}.
+
 Dictionaries are used since I think they are the fastest data structure that is appropriate for this sort of data task, but there may be better options I am not aware of.
 
 The index will be automatically saved, but can be loaded in other parts of the code by importing `utils`, and using the function `utils.load_index()`. This will load the index in the exact format it is constructed in using pickle.
