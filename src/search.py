@@ -1,8 +1,8 @@
 import sys
 import re
-
+import pathlib
 # the file which contains the index
-indexFile = "index.txt"
+indexFile = str(pathlib.Path(__file__).parent.absolute()) + "/index.txt"
 alphabet = {}
 
 
