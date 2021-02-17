@@ -1,7 +1,7 @@
 import nltk
 
 # global vars
-STEMMING = True
+STEMMING = False
 STOPPING = True
 JSON_PATH = "../arxiv_sampled.json"
 STOP_PATH = "../englishST.txt"
