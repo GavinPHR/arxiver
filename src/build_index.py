@@ -93,7 +93,7 @@ def build_index(papers_index, debug=False):
             print(index[""])
         except:
             pass
-        print("Took {} seconds to build.".format(round(end_time - start_time, 3)))
+        print("Took {} seconds to build.".format(round(end_time - start_time, 2)))
 
     return index
 
