@@ -6,12 +6,13 @@ import time
 import numpy as np
 import utils
 from config import *
+from tqdm import tqdm
 
 def get_index_from_json(filename):
     papers_index = dict()
     with open(filename, "r") as f:
         j = json.load(f)                                # list of paper json objects (i.e. dictionaries)
-        for p in j["papers"]:
+        for p in tqdm(j["papers"], desc="Processing json"):
             paper = dict()
 
             # remove newlines and ignore unicode characters
@@ -42,7 +43,7 @@ def build_index(papers_index, debug=False):
                     }
             }
     """
-    start_time = time.time()
+    # start_time = time.time()
 
     # get the unique terms in the paper index
     unique_terms = set()
@@ -61,7 +62,7 @@ def build_index(papers_index, debug=False):
         index[term] = term_info
     
     # loop through the papers and update the index
-    for paperID in list(papers_index.keys()):
+    for paperID in tqdm(list(papers_index.keys()), desc="Building index"):
         content = papers_index[paperID]["content"]
         content = preprocessing.tokenise(content)
 
@@ -88,7 +89,7 @@ def build_index(papers_index, debug=False):
             index.pop("")
         except KeyError:
             pass
-    end_time = time.time()
+    # end_time = time.time()
 
     # if debug flag set, print some information about the data
     if debug:
@@ -99,7 +100,7 @@ def build_index(papers_index, debug=False):
             print(index[""])
         except:
             pass
-        print("Took {} seconds to build.".format(round(end_time - start_time, 2)))
+        # print("Took {} seconds to build.".format(round(end_time - start_time, 2)))
 
     return index
 
