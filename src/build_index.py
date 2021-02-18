@@ -8,32 +8,43 @@ import utils
 from config import *
 from tqdm import tqdm
 
-def get_index_from_json(filename):
-    papers_index = dict()
-    with open(filename, "r") as f:
-        j = json.load(f)                                # list of paper json objects (i.e. dictionaries)
-        for p in tqdm(j["papers"], desc="Processing json"):
-            paper = dict()
+def get_paper_from_json(json_string):
+    p = json.loads(json_string)                   # load the paper as a json object
+    
+    paper = dict()
 
-            # remove newlines and ignore unicode characters
-            total_content = p["abstract"].replace('\n', ' ').encode('ascii', 'ignore') + b' ' + p["content"].replace('\n', ' ').encode('ascii', 'ignore')
+    paperID = p["id"]
 
-            # get other metadata
-            paper["title"] = p["title"]                 # title
-            paper["authors"] = p["authors"]             # authors
-            d = ""
-            for v in p["versions"]:
-                if v["version"] == "v1":
-                    d = v["created"]
-                    break
-            paper["date"] = d                           # date submitted (e.g. [Day], [d] [Mon] [y] HH:MM:ss [Zone])
-            paper["categories"] = p["categories"]       # categories
-            paper["content"] = str(total_content)       # content of paper
+    # remove newlines and ignore unicode characters
+    total_content = p["abstract"].replace('\n', ' ').encode('ascii', 'ignore') + b' ' + p["content"].replace('\n', ' ').encode('ascii', 'ignore')
 
-            papers_index[p["id"]] = paper
-    return papers_index
+    # get other metadata
+    paper["title"] = p["title"]                 # title
+    paper["authors"] = p["authors"]             # authors
+    d = ""
+    for v in p["versions"]:
+        if v["version"] == "v1":
+            d = v["created"]
+            break
+    paper["date"] = d                           # date submitted (e.g. [Day], [d] [Mon] [y] HH:MM:ss [Zone])
+    paper["categories"] = p["categories"]       # categories
+    paper["content"] = str(total_content)       # content of paper
 
-def build_index(papers_index, debug=False):
+    return paper, paperID
+
+def build_papers_index(filename):
+    with open(filename, "rb") as f:
+        papers_as_json = f.readlines()          # since one paper in json per line
+
+        paper_index = dict()
+
+        for p in papers_as_json:
+            paper, paperID = get_paper_from_json(p)
+            paper_index[paperID] = paper
+    
+    return paper_index
+
+def build_inverted_index(papers_index, debug=False):
     """
         Build index of the form:
             { term: { doc_frequency,
@@ -47,7 +58,7 @@ def build_index(papers_index, debug=False):
 
     # get the unique terms in the paper index
     unique_terms = set()
-    for paperID in list(papers_index.keys()):
+    for paperID in tqdm(list(papers_index.keys()), ascii=True, desc="Getting unique terms from papers."):
         content = papers_index[paperID]["content"]
         content = preprocessing.tokenise(content)
         unique_terms |= set(content)
@@ -62,7 +73,7 @@ def build_index(papers_index, debug=False):
         index[term] = term_info
     
     # loop through the papers and update the index
-    for paperID in tqdm(list(papers_index.keys()), desc="Building index"):
+    for paperID in tqdm(list(papers_index.keys()), ascii=True, desc="Building index"):
         content = papers_index[paperID]["content"]
         content = preprocessing.tokenise(content)
 
@@ -105,9 +116,9 @@ def build_index(papers_index, debug=False):
     return index
 
 def main():
-    papers_index = get_index_from_json(JSON_PATH)
-    # print(list(papers_index.keys()))
-    inverted_index = build_index(papers_index, debug=True)
+    papers_index = build_papers_index(JSON_PATH)
+    print(len(list(papers_index.keys())))
+    inverted_index = build_inverted_index(papers_index, debug=True)
     utils.save_index(inverted_index)
 
 if __name__=="__main__":
