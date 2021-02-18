@@ -55,33 +55,28 @@ def build_inverted_index(papers_index, debug=False):
             }
     """
     # start_time = time.time()
-
-    # get the unique terms in the paper index
-    unique_terms = set()
-    for paperID in tqdm(list(papers_index.keys()), ascii=True, desc="Getting unique terms from papers."):
-        content = papers_index[paperID]["content"]
-        content = preprocessing.tokenise(content)
-        unique_terms |= set(content)
-    
     index = dict()
-    
-    # construct the index and initialize the dictionary at each term
-    for term in sorted(unique_terms):
-        term_info = {"doc_frequency": 0,
-                     "doc_positions": dict()
-                    }
-        index[term] = term_info
     
     # loop through the papers and update the index
     for paperID in tqdm(list(papers_index.keys()), ascii=True, desc="Building index"):
         content = papers_index[paperID]["content"]
         content = preprocessing.tokenise(content)
 
-        terms = set(content)
-        for t in terms:
-            index[t]["doc_frequency"] += 1
+        # get set of unique terms for doc_frequency
+        unique_terms = set(content)
 
         for i, word in enumerate(content):
+            if word not in index:
+                index[word] = {"doc_frequency": 0,
+                               "doc_positions": dict()
+                              }
+
+            # only count document once per term
+            if word in unique_terms:
+                index[word]["doc_frequency"] += 1
+                unique_terms.remove(word)
+            
+            # append position to doc_positions
             try:
                 index[word]["doc_positions"][paperID].append(i)
             except:
@@ -107,6 +102,7 @@ def build_inverted_index(papers_index, debug=False):
         # print(STOP_WORDS)
         print(len(list(index.keys())))
         print(index["test"])
+        print(len(list(index["test"]["doc_positions"].keys())))
         try:
             print(index[""])
         except:
