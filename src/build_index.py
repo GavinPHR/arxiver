@@ -9,7 +9,7 @@ from config import *
 from tqdm import tqdm
 
 def get_paper_from_json(json_string):
-    p = json.loads(json_string)                   # load the paper as a json object
+    p = json.loads(json_string)                 # load the paper as a json object
     
     paper = dict()
 
@@ -117,7 +117,7 @@ def build_inverted_index(papers_index, debug=False):
 
 def main():
     papers_index = build_papers_index(JSON_PATH)
-    print(len(list(papers_index.keys())))
+    # print(len(list(papers_index.keys())))
     inverted_index = build_inverted_index(papers_index, debug=True)
     utils.save_index(inverted_index)
 
