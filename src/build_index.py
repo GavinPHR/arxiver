@@ -32,15 +32,15 @@ def get_paper_from_json(json_string):
 
     return paper, paperID
 
-def build_papers_index(filename):
-    with open(filename, "rb") as f:
-        papers_as_json = f.readlines()          # since one paper in json per line
+def build_papers_index(path_to_files):
+    paper_index = dict()
+    for filename in tqdm(os.listdir(path_to_files), desc="Getting paper index from files", ascii=True):
+        with open(path_to_files + '/' + filename, "rb") as f:
+            papers_as_json = f.readlines()          # since one paper in json per line
 
-        paper_index = dict()
-
-        for p in papers_as_json:
-            paper, paperID = get_paper_from_json(p)
-            paper_index[paperID] = paper
+            for p in papers_as_json:
+                paper, paperID = get_paper_from_json(p)
+                paper_index[paperID] = paper
     
     return paper_index
 
@@ -112,7 +112,7 @@ def build_inverted_index(papers_index, debug=False):
     return index
 
 def main():
-    papers_index = build_papers_index(JSON_PATH)
+    papers_index = build_papers_index("W:/dev/arxiv_archive")
     # print(len(list(papers_index.keys())))
     inverted_index = build_inverted_index(papers_index, debug=True)
     utils.save_index(inverted_index)
