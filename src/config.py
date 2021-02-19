@@ -3,7 +3,7 @@ import nltk
 # global vars
 STEMMING = False
 STOPPING = True
-JSON_PATH = "../arxiv_sampled.json"
+JSON_PATH = "W:/dev/arxiv_archive/papersaa.txt"
 STOP_PATH = "../englishST.txt"
 
 if STEMMING:
