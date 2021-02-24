@@ -7,6 +7,7 @@ import numpy as np
 import utils
 from config import *
 from tqdm import tqdm
+import numpy as np
 
 def get_paper_from_json(json_string):
     p = json.loads(json_string)                 # load the paper as a json object
@@ -32,19 +33,22 @@ def get_paper_from_json(json_string):
 
     return paper, paperID
 
-def build_papers_index(path_to_files):
+def build_papers_index(filename, save=False):
     paper_index = dict()
-    for filename in tqdm(os.listdir(path_to_files), desc="Getting paper index from files", ascii=True):
-        with open(path_to_files + '/' + filename, "rb") as f:
-            papers_as_json = f.readlines()          # since one paper in json per line
+    with open(filename, "rb") as f:
+        papers_as_json = f.readlines()          # since one paper in json per line
 
-            for p in papers_as_json:
-                paper, paperID = get_paper_from_json(p)
-                paper_index[paperID] = paper
+        for p in papers_as_json:
+            paper, paperID = get_paper_from_json(p)
+            paper_index[paperID] = paper
+
+        # save papers index to compressed file
+        if save:
+            utils.save_index(paper_index, filename="papers_index")
     
     return paper_index
 
-def build_inverted_index(papers_index, debug=False):
+def build_inverted_index(papers_index, debug=False, desc=""):
     """
         Build index of the form:
             { term: { doc_frequency,
@@ -54,11 +58,10 @@ def build_inverted_index(papers_index, debug=False):
                     }
             }
     """
-    # start_time = time.time()
     index = dict()
-    
+
     # loop through the papers and update the index
-    for paperID in tqdm(list(papers_index.keys()), ascii=True, desc="Building index"):
+    for paperID in tqdm(list(papers_index.keys()), ascii=True, desc="Building index from " + desc):
         content = papers_index[paperID]["content"]
         content = preprocessing.tokenise(content)
 
@@ -108,14 +111,21 @@ def build_inverted_index(papers_index, debug=False):
         except:
             pass
         # print("Took {} seconds to build.".format(round(end_time - start_time, 2)))
-
     return index
 
 def main():
-    papers_index = build_papers_index("W:/dev/arxiv_archive")
+    try:
+        os.makedirs("indexes")
+    except:
+        pass
+    for filename in os.listdir("W:/dev/arxiv_archive/"):
+        if not os.path.exists("indexes/inverted_index_" + filename.split('.')[0] + ".pbz2"):
+            papers_index = build_papers_index("W:/dev/arxiv_archive/" + filename)
+            inverted_index = build_inverted_index(papers_index, debug=False, desc=filename)
+            utils.save_index(inverted_index, filename="indexes/inverted_index_" + filename.split('.')[0])
     # print(len(list(papers_index.keys())))
-    inverted_index = build_inverted_index(papers_index, debug=True)
-    utils.save_index(inverted_index)
+    # indices = np.random.choice(range(len(list(papers_index.keys()))), size=100)
+    # print(list(papers_index.keys())[indices])
 
 if __name__=="__main__":
     main()
