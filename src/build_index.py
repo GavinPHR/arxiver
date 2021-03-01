@@ -113,16 +113,33 @@ def build_inverted_index(papers_index, debug=False, desc=""):
         # print("Took {} seconds to build.".format(round(end_time - start_time, 2)))
     return index
 
+def split_and_save(index):
+    for l in tqdm(ALPHABET, ascii=True, desc="Processing letters"):
+        terms = [i for i in index.keys() if i.startswith(l)]
+        try:
+            tmp = utils.load_index(filename="indexes/inverted_index_" + l)
+        except FileNotFoundError:
+            tmp = dict()
+        for term in terms:
+            if term not in tmp:
+                # if we have a new term initialise index with info
+                tmp[term] = index[term]
+            else:
+                # else merge the data
+                tmp[term]["doc_frequency"] += index[term]["doc_frequency"]
+                for pid in list(index[term]["doc_positions"].keys()):
+                    tmp[term]["doc_positions"][pid] = index[term]["doc_positions"][pid]
+        utils.save_index(tmp, filename="indexes/inverted_index_" + l)
+
 def main():
     try:
         os.makedirs("indexes")
     except:
         pass
     for filename in os.listdir("W:/dev/arxiv_archive/"):
-        if not os.path.exists("indexes/inverted_index_" + filename.split('.')[0] + ".pbz2"):
-            papers_index = build_papers_index("W:/dev/arxiv_archive/" + filename)
-            inverted_index = build_inverted_index(papers_index, debug=False, desc=filename)
-            utils.save_index(inverted_index, filename="indexes/inverted_index_" + filename.split('.')[0])
+        papers_index = build_papers_index("W:/dev/arxiv_archive/" + filename)
+        inverted_index = build_inverted_index(papers_index, debug=False, desc=filename)
+        split_and_save(inverted_index)
     # print(len(list(papers_index.keys())))
     # indices = np.random.choice(range(len(list(papers_index.keys()))), size=100)
     # print(list(papers_index.keys())[indices])
