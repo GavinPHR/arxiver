@@ -1,10 +1,13 @@
 import nltk
+import string
 
 # global vars
-STEMMING = False
+STEMMING = True
 STOPPING = True
 JSON_PATH = "W:/dev/arxiv_archive/papersaa.txt"
 STOP_PATH = "../englishST.txt"
+
+ALPHABET = list(string.ascii_lowercase)
 
 if STEMMING:
     porter = nltk.stem.porter.PorterStemmer()
