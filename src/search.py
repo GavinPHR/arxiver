@@ -60,20 +60,22 @@ def load_index():
 
 # takes in the query as a string and then returns the paper IDs
 def searching(query_string):
-    terms = query_string.split()
+    terms = []
+    terms.extend(re.split('[^\w\']', query_string))
+    terms = [stem(re.sub('\'$', '', re.sub('^\'', '', word))) for word in terms if word != '']
     out = ""
 
     if terms.count("AND") == 1:
-        term1_docs = get_docs(terms[0])
-        term2_docs = get_docs(terms[2])
+        term1_docs = get_docs(terms[0].lower())
+        term2_docs = get_docs(terms[2].lower())
         out = search_and(term1_docs, term2_docs)
 
     if terms.count("OR") == 1:
-        term1_docs = get_docs(terms[0])
-        term2_docs = get_docs(terms[2])
+        term1_docs = get_docs(terms[0].lower())
+        term2_docs = get_docs(terms[2].lower())
         out = search_or(term1_docs, term2_docs)
 
     if len(terms) == 1:
-        out = get_docs(terms[0])
+        out = get_docs(terms[0].lower())
 
     return out

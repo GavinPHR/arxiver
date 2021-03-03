@@ -10,9 +10,9 @@ def tokenise(terms):
 
     # stem words and/or remove empty strings, convert 'term' to term
     if STEMMING:
-        words = [sno.stem(re.sub('\'$', '', re.sub('^\'', '', word))) for word in words if word != '' and not any(char.isdigit() for char in word)]
+        words = [sno.stem(re.sub('\'$', '', re.sub('^\'', '', word))) for word in words if word != '' and not any(char.isdigit() for char in word) and word[0] != '\\']
     else:
-        words = [re.sub('\'$', '', re.sub('^\'', '', word)) for word in words if word != '' and not any(char.isdigit() for char in word)]
+        words = [re.sub('\'$', '', re.sub('^\'', '', word)) for word in words if word != '' and not any(char.isdigit() for char in word) and word[0] != '\\']
 
     return words
 
