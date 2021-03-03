@@ -33,7 +33,10 @@ def retrieve(query):
 	print(query)
 	for id in search.searching(query['freetext']):
 		file = id2file[id]
-		results.append({'title': file['title'], 'authors': file['authors'], 'abstract': file['abstract']})
+		results.append({'link': 'https://arxiv.org/abs/' + id,
+			            'title': file['title'], 
+			            'authors': file['authors'], 
+			            'abstract': file['abstract']})
 	return results
 	# return json.dumps(results)
 
