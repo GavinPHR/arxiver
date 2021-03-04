@@ -6,7 +6,7 @@ dict_keys(['id', 'submitter', 'authors', 'title', 'comments',
 'abstract', 'versions', 'update_date', 'authors_parsed', 'content'])
 """
 import json
-with open('src/arxiv_sampled.json', 'r') as f:
+with open('arxiv_sampled.json', 'r') as f:
     example = json.loads(f.read())
 id2file = dict()
 for paper in example['papers']:
