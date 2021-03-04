@@ -1,11 +1,10 @@
 import os
 import json
 import re
-import preprocessing
+from src.config import *
+from src import preprocessing, utils
 import time
 import numpy as np
-import utils
-from config import *
 from tqdm import tqdm
 import numpy as np
 
@@ -130,8 +129,8 @@ def main():
         os.makedirs("indexes")
     except:
         pass
-    for filename in os.listdir("W:/dev/arxiv_archive/"):
-        papers_index = build_papers_index("W:/dev/arxiv_archive/" + filename)
+    for filename in os.listdir(ARXIV_PATH):
+        papers_index = build_papers_index(ARXIV_PATH + filename)
         inverted_index = build_inverted_index(papers_index, debug=False, desc=filename)
         split_and_save(inverted_index)
     # print(len(list(papers_index.keys())))
