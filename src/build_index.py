@@ -1,10 +1,11 @@
 import os
 import json
 import re
-from src.config import *
-from src import preprocessing, utils
+import preprocessing
 import time
 import numpy as np
+import utils
+from config import *
 from tqdm import tqdm
 import numpy as np
 
@@ -51,9 +52,9 @@ def build_inverted_index(papers_index, debug=False, desc=""):
     """
         Build index of the form:
             { term: { doc_frequency,
-                      doc_positions: 
-                            { docID: [pos1, pos2, ...],
-                              docID: [pos1, pos2, ...]}
+                    #   doc_positions: 
+                    #         { docID: term_count,
+                    #           docID: term_count }
                     }
             }
     """
@@ -67,23 +68,17 @@ def build_inverted_index(papers_index, debug=False, desc=""):
         # get set of unique terms for doc_frequency
         unique_terms = set(content)
 
-        for i, word in enumerate(content):
+        for word in unique_terms:
             if word not in index:
-                index[word] = {"doc_frequency": 0,
-                               "doc_positions": dict()
+                index[word] = {
+                               "doc_frequency": 0,
+                               "doc_ids": dict()
                               }
+            index[word]["doc_frequency"] += 1
+            index[word]["doc_ids"][paperID] = 0
 
-            # only count document once per term
-            if word in unique_terms:
-                index[word]["doc_frequency"] += 1
-                unique_terms.remove(word)
-            
-            # append position to doc_positions
-            try:
-                index[word]["doc_positions"][paperID].append(i)
-            except:
-                index[word]["doc_positions"][paperID] = []
-                index[word]["doc_positions"][paperID].append(i)
+        for word in content:
+            index[word]["doc_ids"][paperID] += 1
 
     # pop all the stop words from the index
     if STOPPING:
@@ -104,7 +99,7 @@ def build_inverted_index(papers_index, debug=False, desc=""):
         # print(STOP_WORDS)
         print(len(list(index.keys())))
         print(index["test"])
-        print(len(list(index["test"]["doc_positions"].keys())))
+        # print(len(list(index["test"]["doc_positions"].keys())))
         try:
             print(index[""])
         except:
@@ -126,8 +121,8 @@ def split_and_save(index):
             else:
                 # else merge the data
                 tmp[term]["doc_frequency"] += index[term]["doc_frequency"]
-                for pid in list(index[term]["doc_positions"].keys()):
-                    tmp[term]["doc_positions"][pid] = index[term]["doc_positions"][pid]
+                for pid in list(index[term]["doc_ids"].keys()):
+                    tmp[term]["doc_ids"][pid] = index[term]["doc_ids"][pid]
         utils.save_index(tmp, filename="indexes/inverted_index_" + l)
 
 def main():
@@ -135,8 +130,8 @@ def main():
         os.makedirs("indexes")
     except:
         pass
-    for filename in os.listdir(ARXIV_PATH):
-        papers_index = build_papers_index(ARXIV_PATH + filename)
+    for filename in os.listdir("W:/dev/arxiv_archive/"):
+        papers_index = build_papers_index("W:/dev/arxiv_archive/" + filename)
         inverted_index = build_inverted_index(papers_index, debug=False, desc=filename)
         split_and_save(inverted_index)
     # print(len(list(papers_index.keys())))

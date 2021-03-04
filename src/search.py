@@ -1,15 +1,14 @@
 import sys
 import re
-import pathlib
-from src.config import *
+
 # the file which contains the index
-indexFile = str(pathlib.Path(__file__).parent.absolute()) + "/index.txt"
+indexFile = "index.txt"
 alphabet = {}
 
 
 def get_docs(term):
     # given a term return the docID its in
-    list1 = alphabet.get(term, [])
+    list1 = alphabet[term]
     ids = []
     for (paper_id, pos) in list1[1:]:
         ids.append(paper_id)
@@ -63,7 +62,7 @@ def load_index():
 def searching(query_string):
     terms = []
     terms.extend(re.split('[^\w\']', query_string))
-    terms = [sno.stem(re.sub('\'$', '', re.sub('^\'', '', word))) for word in terms if word != '']
+    terms = [stem(re.sub('\'$', '', re.sub('^\'', '', word))) for word in terms if word != '']
     out = ""
 
     if terms.count("AND") == 1:

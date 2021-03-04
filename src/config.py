@@ -4,9 +4,8 @@ import string
 # global vars
 STEMMING = True
 STOPPING = True
-ARXIV_PATH = "W:/dev/arxiv_archive/"
-JSON_PATH = ARXIV_PATH + "papersaa.txt"
-STOP_PATH = "src/englishST.txt"
+JSON_PATH = "W:/dev/arxiv_archive/papersaa.txt"
+STOP_PATH = "../englishST.txt"
 
 ALPHABET = list(string.ascii_lowercase)
 
