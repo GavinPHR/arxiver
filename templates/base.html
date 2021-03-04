@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1" crossorigin="anonymous">
+
+    <!-- MathJax -->
+    <script type="text/x-mathjax-config">MathJax.Hub.Config({tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}});</script>
+    <script type="text/javascript" async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-MML-AM_CHTML"></script>
+
+    <!-- fa -->
+    <script src="https://kit.fontawesome.com/6e9b89a87c.js" crossorigin="anonymous"></script>
+    <title>Arxiver</title>
+    
+    {% block style %}{% endblock %}
+  </head>
+  <body>
+
+    <form action="#" method="post" class="container py-3 sticky-top bg-white">
+      <div class="row justify-content-md-center">
+        <div class="col-1 mb-3">
+          <h3>Arxiver</h3>
+        </div>
+        <div class="col-10 mb-3">
+          <input type="search" name="freetext" class="form-control" placeholder="Search" required autofocus>
+        </div>
+        <div class="col-1 mb-3">
+          <button class="btn btn-primary btn-block" type="submit" value="submit">Search</button>
+        </div>
+      </div>
+      <div class="row justify-content-md-center">
+        <div class="col-1 my-3">
+        </div>
+        <div class="col-2 mb-3">
+          <label for="from">From (rounded down)</label>
+          <input name="from" id="from" class="form-control" placeholder="YYYY[-MM[-DD]]"  autofocus>
+        </div>
+        <div class="col-2 mb-3">
+          <label for="to">To (rounded up)</label>
+          <input name="to" id="to" class="form-control" placeholder="YYYY[-MM[-DD]]"  autofocus>
+        </div>
+        <div class="col-4 mb-3">
+          <label for="authors">Author(s)</label>
+          <input name="authors" id="authors" class="form-control" placeholder="Name(s)"  autofocus>
+        </div>
+      </div>
+
+    </form>
+
+
+    <!-- Retrieval results should come here -->
+    {% block content %}{% endblock %}
+
+    <!-- Option 1: Bootstrap Bundle with Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.bundle.min.js" integrity="sha384-ygbV9kiqUc6oa4msXn9868pTtWMgiQaeYH7/t7LECLbyPA2x65Kgf80OJFdroafW" crossorigin="anonymous"></script>
+
+  </body>
+</html>
