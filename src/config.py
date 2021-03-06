@@ -8,6 +8,7 @@ ARXIV_PATH = "W:/dev/arxiv_archive/"
 INDEX_PATH = "C:/dev/arxiver/src/indexes/"
 JSON_PATH = ARXIV_PATH + "papersaa.txt"
 STOP_PATH = "src/englishST.txt"
+VOCABULARY_PATH = "src/vocabulary.pbz2"
 
 ALPHABET = list(string.ascii_lowercase)
 
