@@ -6,7 +6,6 @@ from src import preprocessing, utils
 import time
 import numpy as np
 from tqdm import tqdm
-import numpy as np
 
 def get_paper_from_json(json_string):
     p = json.loads(json_string)                 # load the paper as a json object
@@ -147,7 +146,7 @@ def remove_single_docs():
                 index.pop(term)
         utils.save_index(index, filename="indexes/" + l.split(".")[0])
 
-def remove_frequent_terms(frequency=1000):
+def remove_frequent_terms(frequency=100):
     for l in tqdm(os.listdir(INDEX_PATH), ascii=True, desc="Giving most frequent terms their own index"):
         index = utils.load_index("indexes/" + l.split(".")[0])
         for term in list(index.keys()):
