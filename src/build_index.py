@@ -124,18 +124,55 @@ def split_and_save(index):
                     tmp[term]["doc_ids"][pid] = index[term]["doc_ids"][pid]
         utils.save_index(tmp, filename="indexes/inverted_index_" + l)
 
+def sort_indexes():
+    for l in tqdm(os.listdir(INDEX_PATH), ascii=True, desc="Sorting indexes"):
+        index = utils.load_index("indexes/" + l.split(".")[0])
+        index = {k: v for k, v in reversed(sorted(index.items(), key=lambda item: item[1]["doc_frequency"]))}
+
+        for term in index.keys():
+            index[term]["doc_ids"] = {k: v for k, v in reversed(sorted(index[term]["doc_ids"].items(), key=lambda item: item[1]))}
+
+        utils.save_index(index, filename="indexes/" + l.split(".")[0])
+
+def remove_single_docs():
+    for l in tqdm(os.listdir(INDEX_PATH), ascii=True, desc="Removing terms with single doc_frequency"):
+        index = utils.load_index("indexes/" + l.split(".")[0])
+        for term in list(index.keys()):
+            for doc_id in list(index[term]["doc_ids"].keys()):
+                if index[term]["doc_ids"][doc_id] <= 1:
+                    index[term]["doc_ids"].pop(doc_id)
+                    index[term]["doc_frequency"] -= 1
+
+            if index[term]["doc_frequency"] < 1:
+                index.pop(term)
+        utils.save_index(index, filename="indexes/" + l.split(".")[0])
+
+def remove_frequent_terms(frequency=1000):
+    for l in tqdm(os.listdir(INDEX_PATH), ascii=True, desc="Giving most frequent terms their own index"):
+        index = utils.load_index("indexes/" + l.split(".")[0])
+        for term in list(index.keys()):
+            if index[term]["doc_frequency"] > frequency:
+                new = {term: index[term]}
+                utils.save_index(new, "indexes/inverted_index_" + term)
+                index.pop(term)
+        utils.save_index(index, filename="indexes/" + l.split(".")[0])
+
 def main():
-    try:
-        os.makedirs("indexes")
-    except:
-        pass
-    for filename in os.listdir(ARXIV_PATH):
-        papers_index = build_papers_index(ARXIV_PATH + filename)
-        inverted_index = build_inverted_index(papers_index, debug=False, desc=filename)
-        split_and_save(inverted_index)
+    # try:
+    #     os.makedirs("indexes")
+    # except:
+    #     pass
+    # for filename in os.listdir(ARXIV_PATH):
+    #     papers_index = build_papers_index(ARXIV_PATH + filename)
+    #     inverted_index = build_inverted_index(papers_index, debug=False, desc=filename)
+    #     split_and_save(inverted_index)
     # print(len(list(papers_index.keys())))
     # indices = np.random.choice(range(len(list(papers_index.keys()))), size=100)
     # print(list(papers_index.keys())[indices])
+    # sort_indexes()
+    # remove_single_docs()        # 2.25GB before, 1.19GB after
+    # remove_frequent_terms()
+    pass
 
 if __name__=="__main__":
     main()
