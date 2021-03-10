@@ -7,6 +7,8 @@ import time
 import numpy as np
 from tqdm import tqdm
 
+CITATION_COUNTS = dict()
+
 def get_paper_from_json(json_string):
     p = json.loads(json_string)                 # load the paper as a json object
     
@@ -28,6 +30,7 @@ def get_paper_from_json(json_string):
     paper["date"] = d                           # date submitted (e.g. [Day], [d] [Mon] [y] HH:MM:ss [Zone])
     paper["categories"] = p["categories"]       # categories
     paper["content"] = str(total_content)       # content of paper
+    paper["citations"] = p["timescited"]
 
     return paper, paperID
 
@@ -39,6 +42,7 @@ def build_papers_index(filename, save=False):
         for p in papers_as_json:
             paper, paperID = get_paper_from_json(p)
             paper_index[paperID] = paper
+            CITATION_COUNTS[paperID] = paper["citations"]
 
         # save papers index to compressed file
         if save:
@@ -157,21 +161,18 @@ def remove_frequent_terms(frequency=100):
         utils.save_index(index, filename="indexes/" + l.split(".")[0])
 
 def main():
-    # try:
-    #     os.makedirs("indexes")
-    # except:
-    #     pass
-    # for filename in os.listdir(ARXIV_PATH):
-    #     papers_index = build_papers_index(ARXIV_PATH + filename)
-    #     inverted_index = build_inverted_index(papers_index, debug=False, desc=filename)
-    #     split_and_save(inverted_index)
-    # print(len(list(papers_index.keys())))
-    # indices = np.random.choice(range(len(list(papers_index.keys()))), size=100)
-    # print(list(papers_index.keys())[indices])
-    # sort_indexes()
-    # remove_single_docs()        # 2.25GB before, 1.19GB after
-    # remove_frequent_terms()
-    pass
+    try:
+        os.makedirs("indexes")
+    except:
+        pass
+    for filename in os.listdir(ARXIV_PATH):
+        papers_index = build_papers_index(ARXIV_PATH + filename)
+        inverted_index = build_inverted_index(papers_index, debug=False, desc=filename)
+        split_and_save(inverted_index)
+    sort_indexes()
+    remove_single_docs()        # 2.25GB before, 1.19GB after
+    remove_frequent_terms()
+    utils.save_index(CITATION_COUNTS, filename="citations")
 
 if __name__=="__main__":
     main()
