@@ -29,3 +29,6 @@ def get_vocabulary():
                 continue
         save_index(vocab, filename=VOCABULARY_PATH.split('.')[0])
     return set(vocab)
+
+def get_citations():
+    return load_index("citations")
