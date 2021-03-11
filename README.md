@@ -46,7 +46,7 @@ The stemmer used was a [Snowball stemmer](https://www.nltk.org/_modules/nltk/ste
 
 ## How to get and work with full indexes
 
-The full indexes and citation counts are available at: 
+The full indexes, vocabulary and citation counts are available at: https://drive.google.com/file/d/1WvnlhwG5GZijQBOcXRighzMOIOHQE5wQ/view?usp=sharing
 
 You will require about 1GB to decompress all the data. Simply extract the archive such that each of vocabulary.pbz2, citations.pbz2, and the indexes folder are in src. Then, for an example on how to load and search this data efficiently, check [load_index_test.py](https://github.com/GavinPHR/arxiver/blob/main/src/load_index_test.py).
 
