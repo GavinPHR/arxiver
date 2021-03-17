@@ -7,8 +7,6 @@ dict_keys(['id', 'submitter', 'authors', 'title', 'comments',
 """
 import subprocess
 subprocess.run(["mkdir", "/home/apps/data"])
-subprocess.run(['wget', "--quiet", "--load-cookies", "/tmp/cookies.txt", "\"https://docs.google.com/uc?export=download&confirm=$(wget --quiet --save-cookies /tmp/cookies.txt --keep-session-cookies --no-check-certificate 'https://docs.google.com/uc?export=download&id=1WvnlhwG5GZijQBOcXRighzMOIOHQE5wQ' -O- | sed -rn 's/.*confirm=([0-9A-Za-z_]+).*/\1\n/p')&id=1WvnlhwG5GZijQBOcXRighzMOIOHQE5wQ\"", "-O", "ttds_data.tar"])
-subprocess.run(["mv", "ttds_data.tar", "/home/apps/data"])
 subprocess.run(["sh", "./prep.sh"])
 
 import json
