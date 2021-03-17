@@ -5,7 +5,7 @@ import string
 STEMMING = True
 STOPPING = True
 ARXIV_PATH = "W:/dev/arxiv_archive/"
-INDEX_PATH = "indexes/"
+INDEX_PATH = "/home/apps/indexes/"
 JSON_PATH = ARXIV_PATH + "papersaa.txt"
 STOP_PATH = "englishST.txt"
 VOCABULARY_PATH = "vocabulary.pbz2"
