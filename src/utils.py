@@ -2,7 +2,7 @@ import bz2
 import _pickle as pickle
 import os
 from tqdm import tqdm
-from config import *
+from src.config import *
 
 def load_index(filename="inverted_index"):
     """ Load saved index. """

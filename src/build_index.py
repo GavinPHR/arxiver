@@ -1,8 +1,8 @@
 import os
 import json
 import re
-from config import *
-import preprocessing, utils
+from src.config import *
+from src import preprocessing, utils
 import time
 import numpy as np
 from tqdm import tqdm
