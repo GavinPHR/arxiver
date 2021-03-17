@@ -61,22 +61,38 @@ def load_index():
 
 # takes in the query as a string and then returns the paper IDs
 def searching(query_string):
+    vocab = utils.get_vocabulary()
+    citations = utils.get_citations()
     terms = []
     terms.extend(re.split('[^\w\']', query_string))
+    terms = [word.lower() for word in terms]
     terms = [sno.stem(re.sub('\'$', '', re.sub('^\'', '', word))) for word in terms if word != '']
-    out = ""
+    allkeys = []
+    diction = {}
 
-    if terms.count("AND") == 1:
-        term1_docs = get_docs(terms[0].lower())
-        term2_docs = get_docs(terms[2].lower())
-        out = search_and(term1_docs, term2_docs)
+    for x in terms:
+        if x in vocab:
+            if os.path.exists(("indexes/inverted_index_" + x + ".pbz2")):
+                index = utils.load_index("indexes/inverted_index_" + x)
+            else:
+                index = utils.load_index(filename="indexes/inverted_index_" + x[0])
+            keys = index[x]["doc_ids"].keys()
+            for i in keys:
+                if i not in diction.keys():
+                    diction[i] = index[x]["doc_ids"][i]
+                else:
+                    temp = diction[i]
+                    temp += index[x]["doc_ids"][i]
+                    diction[i] = temp
+            allkeys += keys
 
-    if terms.count("OR") == 1:
-        term1_docs = get_docs(terms[0].lower())
-        term2_docs = get_docs(terms[2].lower())
-        out = search_or(term1_docs, term2_docs)
+    def sorting_citations(n):
+        return citations[n]
 
-    if len(terms) == 1:
-        out = get_docs(terms[0].lower())
+    def sorting_termcount(n):
+        return diction[n]
 
-    return out
+    allkeys = list(set(allkeys))
+    allkeys.sort(key=lambda j: (sorting_termcount(j), sorting_citations(j)), reverse=True)
+
+    return allkeys
