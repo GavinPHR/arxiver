@@ -14,7 +14,7 @@ client = session.client('s3',
                         aws_access_key_id=os.getenv('SPACES_KEY'),
                         aws_secret_access_key=os.getenv('SPACES_SECRET'))
 
-response = client.list_objects(Bucket='example-space-name')
+response = client.list_objects(Bucket='arxiver-data')
 for obj in response['Contents']:
     print(obj['Key'])
 
