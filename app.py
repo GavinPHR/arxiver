@@ -5,8 +5,8 @@ dict_keys(['id', 'submitter', 'authors', 'title', 'comments',
 'journal-ref', 'doi', 'report-no', 'categories', 'license', 
 'abstract', 'versions', 'update_date', 'authors_parsed', 'content'])
 """
-import subprocess
-subprocess.run("sh", "./prep.sh")
+# import subprocess
+# subprocess.run("sh", "./prep.sh")
 
 import json
 with open('arxiv_sampled.json', 'r') as f:
