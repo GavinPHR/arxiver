@@ -6,7 +6,6 @@ dict_keys(['id', 'submitter', 'authors', 'title', 'comments',
 'abstract', 'versions', 'update_date', 'authors_parsed', 'content'])
 """
 import subprocess
-subprocess.run(["mkdir", "/home/apps/data"])
 subprocess.run(["sh", "./prep.sh"])
 
 import json
