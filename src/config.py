@@ -7,7 +7,7 @@ STOPPING = True
 ARXIV_PATH = "W:/dev/arxiv_archive/"
 INDEX_PATH = "/home/apps/data/indexes"
 JSON_PATH = ARXIV_PATH + "papersaa.txt"
-STOP_PATH = "englishST.txt"
+STOP_PATH = "src/englishST.txt"
 VOCABULARY_PATH = "/home/apps/data/vocabulary.pbz2"
 CITATIONS_PATH = "/home/apps/data/citations.pbz2"
 
