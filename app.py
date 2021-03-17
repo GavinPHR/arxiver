@@ -14,6 +14,10 @@ client = session.client('s3',
                         aws_access_key_id=os.getenv('SPACES_KEY'),
                         aws_secret_access_key=os.getenv('SPACES_SECRET'))
 
+response = client.list_objects(Bucket='example-space-name')
+for obj in response['Contents']:
+    print(obj['Key'])
+
 client.download_file('arxiver-data',
                      'ttds_data.tar',
                      '/workspace/src/indexes/ttds_data.tar')
