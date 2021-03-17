@@ -1,7 +1,7 @@
-from src import utils
+import utils
 import time
 import os
-from src.config import *
+from config import *
 from tqdm import tqdm
 
 if __name__=="__main__":

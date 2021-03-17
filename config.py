@@ -5,10 +5,10 @@ import string
 STEMMING = True
 STOPPING = True
 ARXIV_PATH = "W:/dev/arxiv_archive/"
-INDEX_PATH = "C:/dev/arxiver/src/indexes/"
+INDEX_PATH = "indexes/"
 JSON_PATH = ARXIV_PATH + "papersaa.txt"
-STOP_PATH = "src/englishST.txt"
-VOCABULARY_PATH = "src/vocabulary.pbz2"
+STOP_PATH = "englishST.txt"
+VOCABULARY_PATH = "vocabulary.pbz2"
 
 ALPHABET = list(string.ascii_lowercase)
 

@@ -1,7 +1,7 @@
 import sys
 import re
 import pathlib
-from src.config import *
+from config import *
 # the file which contains the index
 indexFile = str(pathlib.Path(__file__).parent.absolute()) + "/index.txt"
 alphabet = {}

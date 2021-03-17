@@ -1,4 +1,4 @@
-from src.config import *
+from config import *
 import re
 from stemming.porter2 import stem
 
