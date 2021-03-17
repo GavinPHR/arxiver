@@ -5,8 +5,18 @@ dict_keys(['id', 'submitter', 'authors', 'title', 'comments',
 'journal-ref', 'doi', 'report-no', 'categories', 'license', 
 'abstract', 'versions', 'update_date', 'authors_parsed', 'content'])
 """
-# import subprocess
-# subprocess.run("sh", "./prep.sh")
+import boto3
+import os
+session = boto3.session.Session()
+client = session.client('s3',
+                        region_name='ams3',
+                        endpoint_url='https://ams3.digitaloceanspaces.com',
+                        aws_access_key_id=os.getenv('SPACES_KEY'),
+                        aws_secret_access_key=os.getenv('SPACES_SECRET'))
+
+client.download_file('arxiver-data',
+                     'ttds_data.tar',
+                     '/workspace/src/indexes/ttds_data.tar')
 
 import json
 with open('arxiv_sampled.json', 'r') as f:
