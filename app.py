@@ -20,7 +20,7 @@ for obj in response['Contents']:
 
 client.download_file('arxiver-data',
                      'ttds_data.tar',
-                     '/workspace/src/indexes/ttds_data.tar')
+                     '/workspace/src/ttds_data.tar')
 
 import json
 with open('arxiv_sampled.json', 'r') as f:
