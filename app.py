@@ -46,3 +46,6 @@ def main():
         return render_template('results.html', results=retrieve(request.form))
     else:
     	return render_template('base.html')
+
+if __name__ == '__main__':
+    app.run()
