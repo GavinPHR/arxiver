@@ -31,4 +31,4 @@ def get_vocabulary():
     return set(vocab)
 
 def get_citations():
-    return load_index("citations")
+    return load_index(CITATIONS_PATH.split('.')[0])
