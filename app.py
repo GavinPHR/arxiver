@@ -62,7 +62,7 @@ def retrieve(query):
 	print(query)
 	ids = search.searching(query['freetext'])[:100]
 	start = time.time()
-	for i, file in enumeate(arxiv.query(id_list=ids)):
+	for i, file in enumerate(arxiv.query(id_list=ids)):
 		try:
 			print(id)
 			print(file)
