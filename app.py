@@ -56,7 +56,7 @@ def retrieve(query):
 	print(query)
 	for id in search.searching(query['freetext'])[:100]:
 		file = arxiv.query(id_list=[id])
-		results.append({'link': 'https://arxiv.org/abs/' + ids[i],
+		results.append({'link': 'https://arxiv.org/abs/' + id,
 			            'title': file['title'], 
 			            'authors': file['authors'], 
 			            'abstract': file['abstract']})
