@@ -24,7 +24,7 @@ print(colored('Indexes downloaded.', 'green'))
 
 print(colored("Extracting indexes...", "red"))
 import subprocess
-subprocess.run("sh", "prep.sh")
+subprocess.run(["sh", "prep.sh"])
 print(colored("Indexes processed.", "green"))
 
 import json
