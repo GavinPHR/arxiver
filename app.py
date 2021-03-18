@@ -55,7 +55,7 @@ def retrieve(query):
 	results = []
 	print(query)
 	ids = search.searching(query['freetext'])
-	for i, file in enumerate(arxiv.query(ids)):
+	for i, file in enumerate(arxiv.query(id_list=ids)):
 		results.append({'link': 'https://arxiv.org/abs/' + ids[i],
 			            'title': file['title'], 
 			            'authors': file['authors'], 
