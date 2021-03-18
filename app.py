@@ -7,6 +7,8 @@ dict_keys(['id', 'submitter', 'authors', 'title', 'comments',
 """
 import boto3
 import os
+
+print(colored('Downloading indexes...', 'red'))
 session = boto3.session.Session()
 client = session.client('s3',
                         region_name='ams3',
@@ -14,13 +16,16 @@ client = session.client('s3',
                         aws_access_key_id=os.getenv('SPACES_KEY'),
                         aws_secret_access_key=os.getenv('SPACES_SECRET'))
 
-response = client.list_objects(Bucket='arxiver-data')
-for obj in response['Contents']:
-    print(obj['Key'])
-
 client.download_file('arxiver-data',
                      'ttds_data.tar',
                      '/workspace/src/ttds_data.tar')
+
+print(colored('Indexes downloaded.', 'green'))
+
+print(colored("Extracting indexes...", "red"))
+import subprocess
+subprocess.run("sh", "prep.sh")
+print(colored("Indexes processed.", "green"))
 
 import json
 with open('arxiv_sampled.json', 'r') as f:
