@@ -74,10 +74,10 @@ def searching(query_string):
 
     for x in terms:
         if x in vocab:
-            if os.path.exists(("indexes/inverted_index_" + x + ".pbz2")):
-                index = utils.load_index("indexes/inverted_index_" + x)
+            if os.path.exists(("data/indexes/inverted_index_" + x + ".pbz2")):
+                index = utils.load_index("data/indexes/inverted_index_" + x)
             else:
-                index = utils.load_index(filename="indexes/inverted_index_" + x[0])
+                index = utils.load_index(filename="data/indexes/inverted_index_" + x[0])
             keys = index[x]["doc_ids"].keys()
             for i in keys:
                 if i not in diction.keys():
