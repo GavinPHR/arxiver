@@ -1,6 +1,6 @@
-WORKING_DIR="/workspace/src/indexes"
+DATA_DIR="/workspace/src/data"
 
-mkdir $WORKING_DIR
-mv $WORKING_DIR/../ttds_data.tar $WORKING_DIR
-tar -xvf $WORKING_DIR/ttds_data.tar
-rm -rf $WORKING_DIR/ttds_data.tar
+mkdir $DATA_DIR
+mv $DATA_DIR/../ttds_data.tar $DATA_DIR
+tar -xvf $DATA_DIR/ttds_data.tar
+rm -rf $DATA_DIR/ttds_data.tar
