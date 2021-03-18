@@ -54,15 +54,18 @@ def retrieve(query):
 	# abstract = 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam non consectetur augue. Mauris mollis vitae tortor quis cursus. Vivamus imperdiet quis mauris ut posuere. Integer sit amet blandit erat, in congue dui. Etiam nec sagittis lorem. Vivamus in turpis faucibus, aliquet purus id, consectetur velit. Nulla tristique imperdiet nunc, at auctor enim mattis varius. Vivamus tristique, purus ut convallis aliquam, enim nulla sagittis nisl, eu accumsan risus arcu et velit. Quisque euismod fermentum est vel auctor. Nulla facilisi. Praesent fringilla, est ac porttitor volutpat, mauris tellus facilisis enim, eu aliquet dui urna a diam.'
 	results = []
 	print(query)
-	for id in search.searching(query['freetext'])[:100]:
+	for id in search.searching(query['freetext'])[:10]:
 		file = arxiv.query(id_list=[id])[0]
 		try:
+			print(id)
+			print(file)
+			print(query["freetext"])
 			results.append({'link': 'https://arxiv.org/abs/' + id,
 				            'title': file['title'], 
 				            'authors': file['authors'], 
 				            'abstract': file['summary']})
 		except:
-			print(id, 'does not work!')
+			print(id, ' does not work!')
 	return results
 	# return json.dumps(results)
 
