@@ -4,6 +4,7 @@ import pathlib
 from src import utils
 import os
 from src.config import *
+from app import vocab, citations
 # the file which contains the index
 indexFile = str(pathlib.Path(__file__).parent.absolute()) + "/index.txt"
 alphabet = {}
@@ -63,8 +64,6 @@ def load_index():
 
 # takes in the query as a string and then returns the paper IDs
 def searching(query_string):
-    vocab = utils.get_vocabulary()
-    citations = utils.get_citations()
     terms = []
     terms.extend(re.split('[^\w\']', query_string))
     terms = [word.lower() for word in terms]
