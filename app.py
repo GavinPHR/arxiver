@@ -59,7 +59,7 @@ def retrieve(query):
 		results.append({'link': 'https://arxiv.org/abs/' + id,
 			            'title': file['title'], 
 			            'authors': file['authors'], 
-			            'value': file['abstract']})
+			            'abstract': file['value']})
 	return results
 	# return json.dumps(results)
 
