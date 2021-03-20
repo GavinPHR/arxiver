@@ -63,7 +63,7 @@ def retrieve(query):
 	start = time.time()
 	for i, file in enumerate(arxiv.query(id_list=ids)):
 		try:
-			suff = "..." is len(file["authors"]) > 5 else ''
+			suff = "..." if len(file["authors"]) > 5 else ''
 			results.append({'link': 'https://arxiv.org/abs/' + ids[i],
 				            'title': file['title'], 
 				            'authors': ', '.join(file['authors'][:5]) + suff, 
