@@ -20,8 +20,7 @@ Practical Group Coursework for Text Technologies for Data Science
 
 ## Start Web Server
 ```bash
-> export FLASK_APP=app.py
-> flask run
+> python3 app.py
 # Then go to http://127.0.0.1:5000/ in your browser
 ```
 
