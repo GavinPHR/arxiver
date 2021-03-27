@@ -5,6 +5,8 @@ from src import utils
 import os
 from src.config import *
 from app import vocab, citations
+from collections import Counter
+from math import log2
 # the file which contains the index
 indexFile = str(pathlib.Path(__file__).parent.absolute()) + "/index.txt"
 alphabet = {}
@@ -63,37 +65,36 @@ def load_index():
 
 
 # takes in the query as a string and then returns the paper IDs
-def searching(query_string):
+def searching(query_string, length):
     terms = []
     terms.extend(re.split('[^\w\']', query_string))
     terms = [word.lower() for word in terms]
     terms = [sno.stem(re.sub('\'$', '', re.sub('^\'', '', word))) for word in terms if word != '']
-    allkeys = []
-    diction = {}
+    terms = [word for word in terms if word in vocab]
+    docs = set()
+    freq = Counter()
+    appearance = Counter()
 
     for x in terms:
-        if x in vocab:
-            if os.path.exists((INDEX_PATH + "/inverted_index_" + x + ".pbz2")):
-                index = utils.load_index(INDEX_PATH + "/inverted_index_" + x)
-            else:
-                index = utils.load_index(INDEX_PATH + "/inverted_index_" + x[0])
-            keys = index[x]["doc_ids"].keys()
-            for i in keys:
-                if i not in diction.keys():
-                    diction[i] = index[x]["doc_ids"][i]
-                else:
-                    temp = diction[i]
-                    temp += index[x]["doc_ids"][i]
-                    diction[i] = temp
-            allkeys += keys
-
-    def sorting_citations(n):
-        return citations[n]
-
-    def sorting_termcount(n):
-        return diction[n]
-
-    allkeys = list(set(allkeys))
-    allkeys.sort(key=lambda j: (sorting_termcount(j), sorting_citations(j)), reverse=True)
-
-    return allkeys
+        if os.path.exists((INDEX_PATH + "/inverted_index_" + x + ".pbz2")):
+            index = utils.load_index(INDEX_PATH + "/inverted_index_" + x)
+        else:
+            index = utils.load_index(INDEX_PATH + "/inverted_index_" + x[0])
+        keys = index[x]["doc_ids"].keys()
+        for i in keys:
+            freq[i] += int(log2(index[x]["doc_ids"][i]))
+            appearance[i] += 1
+        docs.update(keys)
+    res, tmp = [], []
+    ranked = sorted(docs, key=lambda x: appearance[x], reverse=True)[:length]
+    ranked.append(None) # boundary
+    prev = None
+    for doc in ranked:
+        if appearance[doc] != prev:
+            prev = appearance[doc]
+            tmp.sort(key=lambda x: citations[x], reverse=True)
+            res.extend(tmp)
+            tmp = []
+        if doc is not None:
+            tmp.append(doc)
+    return res

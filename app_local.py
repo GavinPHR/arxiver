@@ -9,37 +9,37 @@ dict_keys(['id', 'submitter', 'authors', 'title', 'comments',
 ####################################################
 # SERVER
 ####################################################
-import boto3
-import os
+# import boto3
+# import os
 
-print(colored('Downloading indexes...', 'red'))
-session = boto3.session.Session()
-client = session.client('s3',
-                        region_name='ams3',
-                        endpoint_url='https://ams3.digitaloceanspaces.com',
-                        aws_access_key_id=os.getenv('SPACES_KEY'),
-                        aws_secret_access_key=os.getenv('SPACES_SECRET'))
+# print(colored('Downloading indexes...', 'red'))
+# session = boto3.session.Session()
+# client = session.client('s3',
+#                         region_name='ams3',
+#                         endpoint_url='https://ams3.digitaloceanspaces.com',
+#                         aws_access_key_id=os.getenv('SPACES_KEY'),
+#                         aws_secret_access_key=os.getenv('SPACES_SECRET'))
 
-client.download_file('arxiver-data',
-                     'ttds_data.tar',
-                     '/workspace/src/ttds_data.tar')
+# client.download_file('arxiver-data',
+#                      'ttds_data.tar',
+#                      '/workspace/src/ttds_data.tar')
 
-print(colored('Indexes downloaded.', 'green'))
+# print(colored('Indexes downloaded.', 'green'))
 
-print(colored("Extracting indexes...", "red"))
-import subprocess
-subprocess.run(["sh", "prep.sh"])
-print(colored("Indexes processed.", "green"))
+# print(colored("Extracting indexes...", "red"))
+# import subprocess
+# subprocess.run(["sh", "prep.sh"])
+# print(colored("Indexes processed.", "green"))
 ####################################################
 
 
 ####################################################
 # LOCAL
 ####################################################
-# from src import config
-# config.INDEX_PATH = "ttds_data/indexes"
-# config.VOCABULARY_PATH = "ttds_data/vocabulary.pbz2"
-# config.CITATIONS_PATH = "ttds_data/citations.pbz2"
+from src import config
+config.INDEX_PATH = "ttds_data/indexes"
+config.VOCABULARY_PATH = "ttds_data/vocabulary.pbz2"
+config.CITATIONS_PATH = "ttds_data/citations.pbz2"
 ####################################################
 
 print(colored("Loading vocab and citations.", "red"))
