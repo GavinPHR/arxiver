@@ -23,7 +23,7 @@ def get_vocabulary():
         vocab = []
         for l in tqdm(os.listdir(INDEX_PATH), ascii=True, desc="Getting vocabulary"):
             try:
-                index = load_index("indexes/" + l.split(".")[0])
+                index = load_index(INDEX_PATH + "/" + l.split(".")[0])
                 vocab.extend(list(index.keys()))
             except:
                 continue
